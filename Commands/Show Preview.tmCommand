@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>changed</key>
+	<dict>
+		<key>command</key>
+		<string>#!/usr/bin/env ruby
+require 'csv'
+
+# detect if the file is tab or comma seperated
+# this will then be passed to the CSV parser
+seperator = ENV['TM_SCOPE'].split(' ')[0]
+seperator_char = (seperator =~ /csv/i) ? ',' : "\t"
+
+puts %Q{
+  &lt;html&gt;
+    &lt;head&gt;
+      &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+      &lt;title&gt;Preview of #{seperator}&lt;/title&gt;
+      &lt;!-- &lt;title&gt;Preview of #{ENV['TM_FILENAME']}&lt;/title&gt; --&gt;
+      &lt;style type="text/css" media="screen"&gt;
+
+        body {
+        	font-family: sans-serif;
+          font-size: 10pt;
+          padding: 12pt;
+          margin: 0;
+        }
+      
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          border-spacing: 0;
+        }
+        td {
+        	border: 1px solid #CCC;
+          padding: 4pt
+        }
+      &lt;/style&gt;
+    &lt;/head&gt;
+  
+    &lt;body&gt;
+      &lt;table&gt;
+}
+CSV.foreach(ENV['TM_FILEPATH'], {:col_sep =&gt; seperator_char }) do |row|
+  puts '&lt;tr&gt;'
+  row.each do |td|
+    puts "&lt;td&gt;#{td}&lt;/td&gt;"
+  end
+  puts '&lt;/tr&gt;'
+end
+
+puts %Q{
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+}
+</string>
+	</dict>
+	<key>isDelta</key>
+	<true/>
+	<key>uuid</key>
+	<string>8E521994-0744-4BBF-A65C-923EE8BB4373</string>
+</dict>
+</plist>
