@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby -wKU
+require "csv"
+
+puts %Q{
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv="Content-type" content="text/html; charset=utf-8"&gt;
+    &lt;meta title="Preview #{ENV['TM_FILENAME']}"&gt;
+    &lt;style type="text/css" media="screen"&gt;
+      body {
+      	font-family: sans-serif;
+        font-size: 10pt;
+        padding: 12pt;
+        margin: 0;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        border-spacing: 0;
+      }
+      td {
+      	border: 1px solid #CCC;
+        padding: 4pt
+      }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;table&gt;
+}    
+
+CSV.foreach(ENV['TM_FILEPATH']) do |row|
+  puts '&lt;tr&gt;'
+  row.each do |td|
+    puts "&lt;td&gt;#{td}&lt;/td&gt;"
+  end
+  puts '&lt;/tr&gt;'
+end
+ 
+puts %Q{
+    &lt;/table&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+  }
+</string>
+	<key>input</key>
+	<string>document</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>isDisabled</key>
+	<false/>
+	<key>keyEquivalent</key>
+	<string>^~@p</string>
+	<key>name</key>
+	<string>Preview CSV</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>html</string>
+	<key>outputLocation</key>
+	<string>newWindow</string>
+	<key>scope</key>
+	<string>text.tabular.csv</string>
+	<key>uuid</key>
+	<string>0FA1C225-F8F7-4E1D-9704-ACBEA007569F</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>
